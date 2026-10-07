@@ -1,35 +1,33 @@
+import streamlit as st
 import random
 import string
 
-def check_password_strength(password):
-    length = len(password) >= 8
-    digit = any(char.isdigit() for char in password)
-    upper = any(char.isupper() for char in password)
-    special = any(char in string.punctuation for char in password)
+st.title("🛡️ Rabia's Advanced Password Security Suite")
+st.write("Evaluate password entropy, complexity metrics, and generate secure keys instantly.")
+
+user_pwd = st.text_input("Enter password for security evaluation:", type="password")
+
+if user_pwd:
+    length = len(user_pwd) >= 10
+    digit = any(c.isdigit() for c in user_pwd)
+    upper = any(c.isupper() for c in user_pwd)
+    special = any(c in string.punctuation for c in user_pwd)
     
     score = sum([length, digit, upper, special])
     
-    print("-" * 50)
-    print(f"Password Evaluated : {password}")
+    st.markdown("---")
+    st.write(f"**Target Password:** `{user_pwd}`")
+    
     if score == 4:
-        print("Strength Rating    : 🛡️ STRONG (Elite Security)")
+        st.success("Security Status: 🟢 ENTERPRISE GRADE (Maximum Strength)")
     elif score >= 2:
-        print("Strength Rating    : ⚠️ MODERATE (Needs Improvement)")
+        st.warning("Security Status: 🟡 MODERATE (Upgrade Recommended)")
     else:
-        print("Strength Rating    : ❌ WEAK (Vulnerable)")
-    print("-" * 50)
+        st.error("Security Status: 🔴 VULNERABLE (High Risk)")
+    st.markdown("---")
 
-def generate_secure_password():
+st.subheader("🔑 High-Entropy Key Generator")
+if st.button("Generate Enterprise Key"):
     chars = string.ascii_letters + string.digits + string.punctuation
-    secure_pwd = "".join(random.choice(chars) for _ in range(12))
-    print(f"Generated Secure PWD: {secure_pwd}")
-    print("=" * 50)
-
-if __name__ == "__main__":
-    print("=" * 50)
-    print(" 🔐 RABIA'S PASSWORD SECURITY TOOL 🔐")
-    print("=" * 50)
-    user_pwd = input("Enter a password to test strength: ")
-    check_password_strength(user_pwd)
-    print("\nGenerating a recommended secure password for you:")
-    generate_secure_password()
+    secure_key = "".join(random.choice(chars) for _ in range(16))
+    st.info(f"Generated Key: `{secure_key}`")
